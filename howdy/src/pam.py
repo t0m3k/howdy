@@ -22,12 +22,12 @@ def doAuth(pamh):
 		return pamh.PAM_AUTHINFO_UNAVAIL
 
 	# Abort if we're in a remote SSH env
-	if config.getboolean("core", "ignore_ssh"):
+	if config.getboolean("core", "abort_if_ssh"):
 		if "SSH_CONNECTION" in os.environ or "SSH_CLIENT" in os.environ or "SSHD_OPTS" in os.environ:
 			return pamh.PAM_AUTHINFO_UNAVAIL
 
 	# Abort if lid is closed
-	if config.getboolean("core", "ignore_closed_lid"):
+	if config.getboolean("core", "abort_if_lid_closed"):
 		if any("closed" in open(f).read() for f in glob.glob("/proc/acpi/button/lid/*/state")):
 			return pamh.PAM_AUTHINFO_UNAVAIL
 
